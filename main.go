@@ -76,11 +76,14 @@ func main() {
 func parseFlags() Config {
 	var cfg Config
 
-	flag.StringVar(&cfg.Exchange, "exchange", getEnvOrDefault("GO_TRADER_EXCHANGE", "binance"),
+	// Defaulting to kraken since that's the exchange I actually use
+	flag.StringVar(&cfg.Exchange, "exchange", getEnvOrDefault("GO_TRADER_EXCHANGE", "kraken"),
 		"Exchange to connect to (e.g. binance, kraken)")
-	flag.StringVar(&cfg.Symbol, "symbol", getEnvOrDefault("GO_TRADER_SYMBOL", ""),
+	// Default to ETH/USDT as my primary trading pair
+	flag.StringVar(&cfg.Symbol, "symbol", getEnvOrDefault("GO_TRADER_SYMBOL", "ETH/USDT"),
 		"Trading pair symbol (e.g. BTC/USDT)")
-	flag.BoolVar(&cfg.DryRun, "dry-run", false,
+	// Default to dry-run for safety while I'm still learning the codebase
+	flag.BoolVar(&cfg.DryRun, "dry-run", true,
 		"Simulate trades without placing real orders")
 	flag.StringVar(&cfg.LogLevel, "log-level", getEnvOrDefault("GO_TRADER_LOG_LEVEL", "info"),
 		"Log level: info or debug")
