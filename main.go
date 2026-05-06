@@ -79,13 +79,13 @@ func parseFlags() Config {
 	// Defaulting to kraken since that's the exchange I actually use
 	flag.StringVar(&cfg.Exchange, "exchange", getEnvOrDefault("GO_TRADER_EXCHANGE", "kraken"),
 		"Exchange to connect to (e.g. binance, kraken)")
-	// Default to BTC/USDT — switching from ETH/USDT since that's my main pair now
-	flag.StringVar(&cfg.Symbol, "symbol", getEnvOrDefault("GO_TRADER_SYMBOL", "BTC/USDT"),
-		"Trading pair symbol (e.g. BTC/USDT)")
+	// Default to ETH/BTC — my main pair for now, may revisit
+	flag.StringVar(&cfg.Symbol, "symbol", getEnvOrDefault("GO_TRADER_SYMBOL", "ETH/BTC"),
+		"Trading pair symbol (e.g. BTC/USDT, ETH/BTC)")
 	// Default to dry-run for safety while I'm still learning the codebase
 	flag.BoolVar(&cfg.DryRun, "dry-run", true,
 		"Simulate trades without placing real orders")
-	flag.StringVar(&cfg.LogLevel, "log-level", getEnvOrDefault("GO_TRADER_LOG_LEVEL", "info"),
+	flag.StringVar(&cfg.LogLevel, "log-level", getEnvOrDefault("GO_TRADER_LOG_LEVEL", "debug"),
 		"Log level: info or debug")
 	flag.StringVar(&cfg.ConfigFile, "config", "",
 		"Path to optional YAML config file")
@@ -106,4 +106,11 @@ func parseFlags() Config {
 	return cfg
 }
 
-// getEnvOrDefault re
+// getEnvOrDefault returns the value of the environment variable named by key,
+// or defaultVal if the variable is not set.
+func getEnvOrDefault(key, defaultVal string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+	return defaultVal
+}
