@@ -79,9 +79,9 @@ func parseFlags() Config {
 	// Defaulting to kraken since that's the exchange I actually use
 	flag.StringVar(&cfg.Exchange, "exchange", getEnvOrDefault("GO_TRADER_EXCHANGE", "kraken"),
 		"Exchange to connect to (e.g. binance, kraken)")
-	// Switched default to BTC/USDT — more liquidity and easier to reason about than ETH/BTC
-	flag.StringVar(&cfg.Symbol, "symbol", getEnvOrDefault("GO_TRADER_SYMBOL", "BTC/USDT"),
-		"Trading pair symbol (e.g. BTC/USDT, ETH/BTC)")
+	// Switched to ETH/USDT — I'm currently focused on ETH and this has plenty of liquidity on Kraken
+	flag.StringVar(&cfg.Symbol, "symbol", getEnvOrDefault("GO_TRADER_SYMBOL", "ETH/USDT"),
+		"Trading pair symbol (e.g. BTC/USDT, ETH/USDT)")
 	// Default to dry-run for safety while I'm still learning the codebase
 	flag.BoolVar(&cfg.DryRun, "dry-run", true,
 		"Simulate trades without placing real orders")
@@ -106,4 +106,11 @@ func parseFlags() Config {
 	return cfg
 }
 
-// g
+// getEnvOrDefault returns the value of the environment variable named by key,
+// or defaultVal if the variable is not set or empty.
+func getEnvOrDefault(key, defaultVal string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+	return defaultVal
+}
